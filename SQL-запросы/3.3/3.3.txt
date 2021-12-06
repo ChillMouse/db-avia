@@ -1,0 +1,10 @@
+/*3.3. Сформировать запросы, которые позволили бы сравнить характеристики туры*/
+
+SELECT A.cityOutput AS [City Output], A.countryInput AS [Country Input], A.dateOutput AS [Date of output], eatA.description AS [Nurtition], hotelsA.title AS [Name Hotel], hotelsA.country AS [Country], hotelsA.city AS [City], hotelsA.description AS [Hotel Description], hotelsA.stars AS [Stars Service], hotelsA.rating AS [Rating], hotelsA.additionals AS [Additionals], hotelsA.photo AS [Photo Hotel], priceA.priceTotal AS [Total Price], B.cityOutput AS [City Output], B.countryInput AS [Country Input], B.dateOutput AS [Date of output], eatB.description AS [Nutrition], hotelsB.title AS [Name Hotel], hotelsB.country AS [Country], hotelsB.city AS [City], hotelsB.description AS [Hotel Description], hotelsB.stars AS [Stars Service], hotelsB.rating AS [Hotel Rating], hotelsB.additionals AS [Additionals], hotelsB.photo AS [Photo Hotel], priceB.priceTotal AS [Total Price] /*Выбираем определённые столбцы*/
+FROM 
+(
+(Tours A INNER JOIN TypeEatHotel eatA ON (eatA.id = A.id_typeEat)) INNER JOIN Hotels hotelsA ON (A.id_hotel = hotelsA.id) INNER JOIN Prices priceA ON (priceA.id_tour = A.id) /* Это смешанная, здесь все данные о турах, это первый вариант для сравнения, в блоке WHERE по ID будет выбираться часть информации отсюда */
+CROSS JOIN /* Соединяю две таблицы без учёта какого-либо порядка или соответствия. */
+(Tours B INNER JOIN TypeEatHotel eatB ON (eatB.id = B.id_typeEat)) INNER JOIN Hotels hotelsB ON (B.id_hotel = hotelsB.id) INNER JOIN Prices priceB ON (priceB.id_tour = B.id) /* Это смешанная, здесь все данные о всех турах, это второй вариант для сравнения, в блоке WHERE по ID будет выбираться часть информации отсюда */
+) /* Берём данные из одной и той же таблицы. Таблице назначается корелляционное имя, для первого случая - A, для второго - B. По таблице, которая существует в памяти - ведётся поиск*/
+WHERE A.id=1 AND B.id=2 /* Выбираем туры, которые хотим посмотреть. Выборку делаем по ID. Здесь выбран первый и второй тур. Но также можно сравнить третий тур с первым или вторым */
